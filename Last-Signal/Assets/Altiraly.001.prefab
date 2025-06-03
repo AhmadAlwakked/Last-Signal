@@ -180,5 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb0f99a11650d6f46992c41e66f62a0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
   range: 100
+  enemyTag: Enemy
+  partToRotate: {fileID: 0}
+  rotationSpeed: 360

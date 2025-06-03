@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TowerRotator : MonoBehaviour
+public class TowerLookAtEnemy : MonoBehaviour
 {
     private Transform target; // De vijand waar de toren naar kijkt
     public float range = 10f; // Bereik van de toren
     public string enemyTag = "Enemy"; // Tag van de vijand
     public Transform partToRotate; // Optioneel: het deel van de toren dat roteert (bijv. de turret)
-    public float rotationSpeed = 360f; // Rotatiesnelheid in graden per seconde
 
     void Start()
     {
@@ -52,28 +51,24 @@ public class TowerRotator : MonoBehaviour
         {
             // Bereken de richting naar de vijand
             Vector3 dir = target.position - (partToRotate != null ? partToRotate.position : transform.position);
-            // Negeer de Y-component voor rotatie (alleen links/rechts)
-            dir.y = 0; // Beperk tot Y-as rotatie
-            if (dir != Vector3.zero) // Voorkom ongeldige rotatie
-            {
-                // Maak een rotatie die naar de vijand kijkt
-                Quaternion lookRotation = Quaternion.LookRotation(dir);
-                // Gebruik SmoothDamp voor soepele rotatie
-                Quaternion rotation = Quaternion.RotateTowards(
-                    partToRotate != null ? partToRotate.rotation : transform.rotation,
-                    lookRotation,
-                    rotationSpeed * Time.deltaTime
-                );
+            // Maak een rotatie die naar de vijand kijkt
+            Quaternion lookRotation = Quaternion.LookRotation(dir);
 
-                // Pas de rotatie toe
-                if (partToRotate != null)
-                {
-                    partToRotate.rotation = rotation;
-                }
-                else
-                {
-                    transform.rotation = rotation;
-                }
+            // Gebruik SmoothDamp voor soepele rotatie (optioneel)
+            Quaternion rotation = Quaternion.RotateTowards(
+                partToRotate != null ? partToRotate.rotation : transform.rotation,
+                lookRotation,
+                Time.deltaTime * 360f // Rotatiesnelheid (graden per seconde)
+            );
+
+            // Pas de rotatie toe
+            if (partToRotate != null)
+            {
+                partToRotate.rotation = rotation;
+            }
+            else
+            {
+                transform.rotation = rotation;
             }
         }
     }

@@ -22,6 +22,13 @@ public class BaseClass : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+        
+        
+        
+        //if (currentHealth <= 0)
+        //{
+        //    Destroy(this.gameObject);
+        //}
     }
 
     // Update is called once per frame

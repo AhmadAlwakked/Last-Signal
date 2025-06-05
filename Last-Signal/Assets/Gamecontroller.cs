@@ -3,28 +3,36 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    // Laadt de spelscène
     public void StartGame()
     {
         SceneManager.LoadScene("Game");
     }
 
-    // Laadt de settings-scène
     public void OpenSettings()
     {
         SceneManager.LoadScene("Settings");
-
     }
 
-    public void Return()
+    public void ReturnToGame()
     {
         SceneManager.LoadScene("Game");
-
     }
 
-    // Sluit het spel
-    public void ExitGame()
+    public void ReturnMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void QuitGame()
     {
         Application.Quit();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Screen.fullScreen = !Screen.fullScreen;
+        }
     }
 }

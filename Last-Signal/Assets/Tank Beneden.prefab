@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 6230982893975948964}
   - component: {fileID: 1461486583033662516}
   - component: {fileID: 4647235854836246310}
+  - component: {fileID: 4721445142330482629}
   m_Layer: 0
   m_Name: Tank Beneden
   m_TagString: Untagged
@@ -180,5 +181,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb0f99a11650d6f46992c41e66f62a0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
   range: 0
+  enemyTag: Enemy
+  partToRotate: {fileID: 0}
+  rotationSpeed: 360
+--- !u!114 &4721445142330482629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7635117224025904061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f8060d3451c95d4c9e4fbdca6ed433b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

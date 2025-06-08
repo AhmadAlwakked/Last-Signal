@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6314327694697842333}
   - component: {fileID: 8046047332154700810}
   - component: {fileID: 7422909827848867834}
+  - component: {fileID: 2199618906736448949}
   m_Layer: 0
   m_Name: Altiraly.001
   m_TagString: Untagged
@@ -84,6 +85,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2199618906736448949
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1433046342127336030}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.3365707, y: 0.84968877, z: 0.6417228}
+  m_Center: {x: 0.41848645, y: 0.38276488, z: 0.71440464}
 --- !u!1 &2690857425727411990
 GameObject:
   m_ObjectHideFlags: 0

@@ -52,8 +52,56 @@ PrefabInstance:
       propertyPath: m_Name
       value: Artellery enemy Final Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 6572987266504445259, guid: 0e04c4bba626c3f4a91dd761b5f577b1, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6572987266504445259, guid: 0e04c4bba626c3f4a91dd761b5f577b1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3906172878830490831}
+    - targetCorrespondingSourceObject: {fileID: 6572987266504445259, guid: 0e04c4bba626c3f4a91dd761b5f577b1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5565673237972807624}
   m_SourcePrefab: {fileID: 100100000, guid: 0e04c4bba626c3f4a91dd761b5f577b1, type: 3}
+--- !u!1 &1876848835196660938 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6572987266504445259, guid: 0e04c4bba626c3f4a91dd761b5f577b1, type: 3}
+  m_PrefabInstance: {fileID: 4700659623188324737}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &3906172878830490831
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876848835196660938}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.190721, y: 12.947149, z: 3.59797}
+  m_Center: {x: 0, y: 1.9702601, z: 2.6621356}
+--- !u!114 &5565673237972807624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876848835196660938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f8060d3451c95d4c9e4fbdca6ed433b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

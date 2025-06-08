@@ -96,9 +96,10 @@ GameObject:
   - component: {fileID: 1461486583033662516}
   - component: {fileID: 4647235854836246310}
   - component: {fileID: 4721445142330482629}
+  - component: {fileID: -6694160927156529123}
   m_Layer: 0
   m_Name: Tank Beneden
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -197,3 +198,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f8060d3451c95d4c9e4fbdca6ed433b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &-6694160927156529123
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7635117224025904061}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.7961736, y: 1.2221183, z: 2.610051}
+  m_Center: {x: 0.24262622, y: 0.6353892, z: 1.9889431}

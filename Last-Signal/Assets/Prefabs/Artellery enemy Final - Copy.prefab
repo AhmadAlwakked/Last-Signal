@@ -428,7 +428,7 @@ GameObject:
   - component: {fileID: 6404399748732040077}
   - component: {fileID: 1302700253577610735}
   m_Layer: 0
-  m_Name: Artellery enemy Final
+  m_Name: Artellery enemy Final - Copy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

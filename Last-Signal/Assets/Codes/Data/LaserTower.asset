@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerName: LaserTower
   buildCost: 50
-  towerPrefab: {fileID: 919132149155446097, guid: 02071ad5df51fa94b827300107ae43d0,
-    type: 3}
+  towerPrefab: {fileID: 8795693338290975750, guid: 1e31494410262e042829d38498e61812, type: 3}

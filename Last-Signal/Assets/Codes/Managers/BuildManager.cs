@@ -3,7 +3,15 @@ using UnityEngine;
 public class BuildManager : MonoBehaviour
 {
     public static BuildManager Instance { get; private set; } // Singleton
-    private TowerData selectedTower; // Geselecteerde toren om te bouwen
+
+    [SerializeField] private GameObject[] towerPrefabs; // Array van torenprefabs, in Inspector instellen
+    [SerializeField] private LayerMask groundLayer; // Laag voor raycast naar de grond
+    [SerializeField] private float placementRadius = 1f; // Radius voor collider-check
+
+    private GameObject selectedTowerPrefab;
+    private GameObject previewTower;
+    private bool isPlacing;
+    private int currentCost;
 
     private void Awake()
     {
@@ -15,47 +23,117 @@ public class BuildManager : MonoBehaviour
         Instance = this;
     }
 
-    public void SelectTower(TowerData towerData)
+    // Selecteer een toren via index (voor UI-knoppen)
+    public void SelectTower(int index)
     {
-        selectedTower = towerData;
-        Debug.Log($"Geselecteerde toren: {towerData.towerName}");
+        if (index < 0 || index >= towerPrefabs.Length)
+        {
+            Debug.LogWarning("Ongeldige torenindex!");
+            return;
+        }
+
+        selectedTowerPrefab = towerPrefabs[index];
+        if (selectedTowerPrefab == null)
+        {
+            Debug.LogWarning("Geen prefab ingesteld voor deze toren!");
+            return;
+        }
+
+        TowerCost costComponent = selectedTowerPrefab.GetComponent<TowerCost>();
+        if (costComponent == null)
+        {
+            Debug.LogWarning("Torenprefab heeft geen TowerCost-component!");
+            return;
+        }
+        currentCost = costComponent.cost;
+
+        // Controleer materialen
+        if (!MaterialManager.Instance.SpendMaterials(currentCost))
+        {
+            Debug.LogWarning("Niet genoeg materialen om deze toren te bouwen!");
+            return;
+        }
+
+        StartPlacement();
     }
 
-    public bool CanBuild(Vector3 position)
+    private void StartPlacement()
     {
-        if (selectedTower == null)
+        if (previewTower != null)
         {
-            Debug.LogWarning("Geen toren geselecteerd!");
-            return false;
+            Destroy(previewTower);
         }
-        // Controleer of de positie vrij is (simpele check)
-        Collider[] colliders = Physics.OverlapSphere(position, 1f);
-        bool isPositionFree = colliders.Length == 0;
-        if (!isPositionFree)
-        {
-            Debug.LogWarning("Positie is bezet!");
-            return false;
-        }
-        // Controleer of er genoeg materialen zijn
-        return MaterialManager.Instance.SpendMaterials(selectedTower.buildCost);
+
+        previewTower = Instantiate(selectedTowerPrefab);
+        previewTower.SetActive(false); // Uit tot cursorpositie bekend is
+        isPlacing = true;
     }
 
-    public void BuildTower(Vector3 position)
-    {
-        if (CanBuild(position))
-        {
-            GameObject tower = Instantiate(selectedTower.towerPrefab, position, Quaternion.identity);
-            Debug.Log($"Toren gebouwd: {selectedTower.towerName} op {position}");
-            selectedTower = null; // Reset selectie
-        }
-    }
-
-    // Voor testen: bouw een toren met een toets
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B) && selectedTower != null) // Druk op 'B' om te testen
+        if (isPlacing && previewTower != null)
         {
-            BuildTower(new Vector3(0, 0, 0)); // Testpositie
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, 100f, groundLayer))
+            {
+                previewTower.transform.position = hit.point;
+                previewTower.SetActive(true);
+
+                bool isValid = IsValidPosition(hit.point);
+                SetPreviewColor(isValid);
+            }
+            else
+            {
+                previewTower.SetActive(false);
+            }
+
+            if (Input.GetMouseButtonDown(0) && IsValidPosition(previewTower.transform.position))
+            {
+                PlaceTower();
+            }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                CancelPlacement();
+            }
         }
+    }
+
+    private bool IsValidPosition(Vector3 position)
+    {
+        Collider[] colliders = Physics.OverlapSphere(position, placementRadius);
+        return colliders.Length == 0; // Geldige positie als er geen colliders zijn
+    }
+
+    private void SetPreviewColor(bool isValid)
+    {
+        Renderer renderer = previewTower.GetComponentInChildren<Renderer>();
+        if (renderer != null)
+        {
+            renderer.material.color = isValid ? Color.green : Color.red; // Groen = geldig, rood = ongeldig
+        }
+    }
+
+    private void PlaceTower()
+    {
+        previewTower.SetActive(true);
+        Renderer renderer = previewTower.GetComponentInChildren<Renderer>();
+        if (renderer != null)
+        {
+            renderer.material.color = Color.white; // Reset naar normale kleur
+        }
+        selectedTowerPrefab = null;
+        previewTower = null;
+        isPlacing = false;
+        Debug.Log("Toren geplaatst!");
+    }
+
+    private void CancelPlacement()
+    {
+        Destroy(previewTower);
+        MaterialManager.Instance.AddMaterials(currentCost); // Refund
+        selectedTowerPrefab = null;
+        previewTower = null;
+        isPlacing = false;
+        Debug.Log("Plaatsing geannuleerd, materialen teruggegeven.");
     }
 }

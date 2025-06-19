@@ -6,14 +6,18 @@ public class WaveManager : MonoBehaviour
 {
     public static WaveManager Instance { get; private set; }
     [SerializeField] private float waveInterval = 30f;
-    [SerializeField] private Transform[] spawnPoints;
-    [SerializeField] private List<WaveConfig> waveConfigs = new List<WaveConfig>();
-    private int currentWaveIndex = 0;
-    private float nextWaveTime;
-    private List<GameObject> activeEnemies = new List<GameObject>();
+    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private List<GameObject> allEnemyTypes = new List<GameObject>();
+    [SerializeField] private int maxPoolSizePerEnemy = 10;
+    [SerializeField] private int baseEnemiesPerType = 1;
+    [SerializeField] private int enemyIncreasePerWave = 2;
+    [SerializeField] private float spawnDelay = 1f; // Nieuwe aanpasbare delay tussen spawns
 
     private Dictionary<GameObject, Queue<GameObject>> enemyPools = new Dictionary<GameObject, Queue<GameObject>>();
-    [SerializeField] private int maxPoolSizePerEnemy = 10;
+    private float nextWaveTime;
+    private List<GameObject> activeEnemies = new List<GameObject>();
+    private int currentWaveIndex = 0;
+    private List<GameObject> activeEnemyTypes = new List<GameObject>();
 
     private void Awake()
     {
@@ -22,33 +26,41 @@ public class WaveManager : MonoBehaviour
         InitializePools();
     }
 
-    private void Start() => nextWaveTime = Time.time + waveInterval;
+    private void Start()
+    {
+        nextWaveTime = Time.time + waveInterval;
+        if (allEnemyTypes.Count >= 2)
+        {
+            activeEnemyTypes.Add(allEnemyTypes[0]);
+            activeEnemyTypes.Add(allEnemyTypes[1]);
+        }
+    }
 
     private void Update()
     {
-        if (Time.time >= nextWaveTime && currentWaveIndex < waveConfigs.Count)
+        if (Time.time >= nextWaveTime && spawnPoint != null && activeEnemyTypes.Count > 0)
         {
             StartCoroutine(SpawnWave());
             nextWaveTime = Time.time + waveInterval;
+            currentWaveIndex++;
+
+            if (currentWaveIndex % 3 == 0 && activeEnemyTypes.Count < allEnemyTypes.Count)
+            {
+                activeEnemyTypes.Add(allEnemyTypes[activeEnemyTypes.Count]);
+            }
         }
     }
 
     private void InitializePools()
     {
-        foreach (var wave in waveConfigs)
+        foreach (GameObject enemyPrefab in allEnemyTypes)
         {
-            foreach (var enemyType in wave.enemyTypes)
+            enemyPools[enemyPrefab] = new Queue<GameObject>();
+            for (int i = 0; i < maxPoolSizePerEnemy; i++)
             {
-                if (!enemyPools.ContainsKey(enemyType.enemyPrefab))
-                {
-                    enemyPools[enemyType.enemyPrefab] = new Queue<GameObject>();
-                    for (int i = 0; i < maxPoolSizePerEnemy; i++)
-                    {
-                        GameObject enemy = Instantiate(enemyType.enemyPrefab);
-                        enemy.SetActive(false);
-                        enemyPools[enemyType.enemyPrefab].Enqueue(enemy);
-                    }
-                }
+                GameObject enemy = Instantiate(enemyPrefab);
+                enemy.SetActive(false);
+                enemyPools[enemyPrefab].Enqueue(enemy);
             }
         }
     }
@@ -59,7 +71,9 @@ public class WaveManager : MonoBehaviour
         {
             return enemyPools[prefab].Dequeue();
         }
-        return Instantiate(prefab);
+        GameObject enemy = Instantiate(prefab);
+        enemy.SetActive(false);
+        return enemy;
     }
 
     private void ReturnEnemyToPool(GameObject enemy)
@@ -68,7 +82,7 @@ public class WaveManager : MonoBehaviour
         BaseClass enemyScript = enemy.GetComponent<BaseClass>();
         if (enemyScript != null && enemyScript.CurrentHP <= 0)
         {
-            GameObject prefab = enemyScript.GetComponent<BaseClass>().gameObject;
+            GameObject prefab = enemyScript.gameObject;
             if (prefab && enemyPools.ContainsKey(prefab))
             {
                 enemyPools[prefab].Enqueue(enemy);
@@ -78,19 +92,17 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator SpawnWave()
     {
-        if (currentWaveIndex >= waveConfigs.Count) yield break;
-        WaveConfig wave = waveConfigs[currentWaveIndex++];
-        foreach (var enemyType in wave.enemyTypes)
-        {
-            int count = Random.Range(enemyType.minCount, enemyType.maxCount + 1);
-            for (int i = 0; i < count; i++)
+        if (spawnPoint == null || activeEnemyTypes.Count == 0) yield break;
+
+        foreach (GameObject enemyType in activeEnemyTypes)        {
+            int totalEnemies = baseEnemiesPerType + (currentWaveIndex * enemyIncreasePerWave);
+            for (int i = 0; i < totalEnemies; i++)
             {
-                Transform spawn = spawnPoints[Random.Range(0, spawnPoints.Length)];
-                GameObject enemy = GetPooledEnemy(enemyType.enemyPrefab);
-                enemy.transform.position = spawn.position;
+                GameObject enemy = GetPooledEnemy(enemyType);
+                enemy.transform.position = spawnPoint.position;
                 enemy.SetActive(true);
                 activeEnemies.Add(enemy);
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(spawnDelay); // Gebruik de aanpasbare delay
             }
         }
     }
@@ -99,22 +111,7 @@ public class WaveManager : MonoBehaviour
     {
         activeEnemies.Remove(enemy);
         ReturnEnemyToPool(enemy);
-        if (activeEnemies.Count == 0 && currentWaveIndex >= waveConfigs.Count)
-            Debug.Log("[WaveManager] Alle golven voltooid!");
+        if (activeEnemies.Count == 0)
+            Debug.Log("[WaveManager] Golf " + currentWaveIndex + " voltooid!");
     }
-}
-
-[CreateAssetMenu(fileName = "WaveConfig", menuName = "TowerDefense/WaveConfig")]
-public class WaveConfig : ScriptableObject
-{
-    [SerializeField] public int startWave;
-    [SerializeField] public List<EnemyTypeConfig> enemyTypes = new List<EnemyTypeConfig>();
-}
-
-[System.Serializable]
-public class EnemyTypeConfig
-{
-    [SerializeField] public GameObject enemyPrefab;
-    [SerializeField] public int minCount;
-    [SerializeField] public int maxCount;
 }

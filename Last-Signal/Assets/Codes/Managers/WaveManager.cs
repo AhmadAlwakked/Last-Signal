@@ -8,10 +8,11 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private float waveInterval = 30f;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private List<GameObject> allEnemyTypes = new List<GameObject>();
+    [SerializeField] private Transform[] waypoints; // Empty objects als waypoints, ingesteld in Inspector
     [SerializeField] private int maxPoolSizePerEnemy = 10;
     [SerializeField] private int baseEnemiesPerType = 1;
     [SerializeField] private int enemyIncreasePerWave = 2;
-    [SerializeField] private float spawnDelay = 1f; // Nieuwe aanpasbare delay tussen spawns
+    [SerializeField] private float spawnDelay = 1f;
 
     private Dictionary<GameObject, Queue<GameObject>> enemyPools = new Dictionary<GameObject, Queue<GameObject>>();
     private float nextWaveTime;
@@ -24,6 +25,10 @@ public class WaveManager : MonoBehaviour
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         InitializePools();
+        if (waypoints == null || waypoints.Length == 0)
+        {
+            Debug.LogWarning("Geen waypoints ingesteld in WaveManager! Voeg empty objects toe aan waypoints.");
+        }
     }
 
     private void Start()
@@ -92,17 +97,23 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator SpawnWave()
     {
-        if (spawnPoint == null || activeEnemyTypes.Count == 0) yield break;
+        if (spawnPoint == null || activeEnemyTypes.Count == 0 || waypoints == null || waypoints.Length == 0) yield break;
 
-        foreach (GameObject enemyType in activeEnemyTypes)        {
+        foreach (GameObject enemyType in activeEnemyTypes)
+        {
             int totalEnemies = baseEnemiesPerType + (currentWaveIndex * enemyIncreasePerWave);
             for (int i = 0; i < totalEnemies; i++)
             {
                 GameObject enemy = GetPooledEnemy(enemyType);
                 enemy.transform.position = spawnPoint.position;
                 enemy.SetActive(true);
+                BaseEnemy enemyScript = enemy.GetComponent<BaseEnemy>();
+                if (enemyScript != null)
+                {
+                    enemyScript.SetWaypoints(waypoints); // Geef Transform[] waypoints door
+                }
                 activeEnemies.Add(enemy);
-                yield return new WaitForSeconds(spawnDelay); // Gebruik de aanpasbare delay
+                yield return new WaitForSeconds(spawnDelay);
             }
         }
     }

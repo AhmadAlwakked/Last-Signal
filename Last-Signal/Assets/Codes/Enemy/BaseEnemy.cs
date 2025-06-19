@@ -12,14 +12,14 @@ public class BaseEnemy : BaseClass
     private float turnSpeed = 5f;
 
     protected int currentWaypointIndex = 0; // Beschermd voor afgeleide klassen
-    private bool isMoving = true; // Privé, met public property
+    protected bool isMoving = true; // Veranderd van private naar protected
     private Vector3 previousPosition;
     private Vector3 velocity;
 
     public float MoveSpeed => moveSpeed;
     public Vector3 Velocity => velocity;
     public bool isAlive => currentHP > 0;
-    public bool IsMoving => isMoving; // Public property voor externe toegang
+    public bool IsMoving => isMoving; // Public property blijft voor externe toegang
 
     protected override void Start()
     {
@@ -27,24 +27,24 @@ public class BaseEnemy : BaseClass
         previousPosition = transform.position;
         if (waypoints == null || waypoints.Length == 0)
         {
-            Debug.LogError("Geen waypoints ingesteld! Disabling movement.");
+            Debug.LogError("Geen waypoints ingesteld!");
             isMoving = false;
-            return;
         }
-        // Voeg Rigidbody en Collider toe als ze ontbreken
-        Rigidbody rb = gameObject.GetComponent<Rigidbody>();
-        if (rb == null)
+        else
         {
-            rb = gameObject.AddComponent<Rigidbody>();
-            rb.isKinematic = true;
-            rb.freezeRotation = true; // Voorkom willekeurige rotatie
+            Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+            if (rb == null)
+            {
+                rb = gameObject.AddComponent<Rigidbody>();
+                rb.isKinematic = true; // Kinematic voor controle
+            }
+            Collider col = gameObject.GetComponent<Collider>();
+            if (col == null)
+            {
+                gameObject.AddComponent<BoxCollider>();
+            }
+            gameObject.layer = LayerMask.NameToLayer("Enemy");
         }
-        Collider col = gameObject.GetComponent<Collider>();
-        if (col == null)
-        {
-            gameObject.AddComponent<BoxCollider>();
-        }
-        gameObject.layer = LayerMask.NameToLayer("Enemy");
     }
 
     protected override void UpdateLogic()
@@ -54,12 +54,12 @@ public class BaseEnemy : BaseClass
         Vector3 target = waypoints[currentWaypointIndex].position;
         Vector3 direction = (target - transform.position).normalized;
 
-        // Roteer soepel naar de bewegingsrichting
+        // Roteer naar de bewegingsrichting
         Quaternion targetRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turnSpeed);
 
-        // Beweeg stabiel naar waypoint
-        transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+        // Beweeg in lokale as (vooruit)
+        transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime, Space.Self);
 
         // Controleer of waypoint is bereikt
         if (Vector3.Distance(transform.position, target) < 0.5f)
@@ -87,6 +87,18 @@ public class BaseEnemy : BaseClass
         else
         {
             Debug.LogWarning("MaterialManager niet gevonden!");
+        }
+    }
+
+    // Publieke methode om waypoints in te stellen
+    public void SetWaypoints(Transform[] newWaypoints)
+    {
+        waypoints = newWaypoints;
+        currentWaypointIndex = 0;
+        isMoving = waypoints != null && waypoints.Length > 0;
+        if (!isMoving)
+        {
+            Debug.LogError("Ongeldige waypoints ontvangen!");
         }
     }
 }

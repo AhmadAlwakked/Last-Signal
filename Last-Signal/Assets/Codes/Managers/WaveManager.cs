@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -7,14 +7,11 @@ public class WaveManager : MonoBehaviour
     public static WaveManager Instance { get; private set; }
     [SerializeField] private float waveInterval = 30f;
     [SerializeField] private Transform spawnPoint;
-    [SerializeField] private List<GameObject> allEnemyTypes = new List<GameObject>();
+    [SerializeField] private List<GameObject> allEnemyTypes = new List<GameObject>(); // Prefabs uit Assets
     [SerializeField] private Transform[] waypoints; // Empty objects als waypoints, ingesteld in Inspector
-    [SerializeField] private int maxPoolSizePerEnemy = 10;
-    [SerializeField] private int baseEnemiesPerType = 1;
-    [SerializeField] private int enemyIncreasePerWave = 2;
+    [SerializeField] private int enemiesPerTypePerWave = 3; // Vaste aantal vijanden per type per golf
     [SerializeField] private float spawnDelay = 1f;
 
-    private Dictionary<GameObject, Queue<GameObject>> enemyPools = new Dictionary<GameObject, Queue<GameObject>>();
     private float nextWaveTime;
     private List<GameObject> activeEnemies = new List<GameObject>();
     private int currentWaveIndex = 0;
@@ -24,10 +21,14 @@ public class WaveManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
-        InitializePools();
+        Debug.Log("WaveManager geactiveerd. Aantal enemy types: " + allEnemyTypes.Count);
         if (waypoints == null || waypoints.Length == 0)
         {
             Debug.LogWarning("Geen waypoints ingesteld in WaveManager! Voeg empty objects toe aan waypoints.");
+        }
+        if (spawnPoint == null)
+        {
+            Debug.LogError("Geen spawnPoint ingesteld!");
         }
     }
 
@@ -38,6 +39,11 @@ public class WaveManager : MonoBehaviour
         {
             activeEnemyTypes.Add(allEnemyTypes[0]);
             activeEnemyTypes.Add(allEnemyTypes[1]);
+            Debug.Log("Actieve enemy types ingesteld: " + activeEnemyTypes.Count);
+        }
+        else
+        {
+            Debug.LogWarning("Te weinig enemy types! Minimaal 2 vereist.");
         }
     }
 
@@ -46,82 +52,61 @@ public class WaveManager : MonoBehaviour
         if (Time.time >= nextWaveTime && spawnPoint != null && activeEnemyTypes.Count > 0)
         {
             StartCoroutine(SpawnWave());
-            nextWaveTime = Time.time + waveInterval;
+            // nextWaveTime wordt ingesteld in SpawnWave na het spawnen
             currentWaveIndex++;
+            Debug.Log("Start nieuwe golf: " + currentWaveIndex);
 
             if (currentWaveIndex % 3 == 0 && activeEnemyTypes.Count < allEnemyTypes.Count)
             {
                 activeEnemyTypes.Add(allEnemyTypes[activeEnemyTypes.Count]);
-            }
-        }
-    }
-
-    private void InitializePools()
-    {
-        foreach (GameObject enemyPrefab in allEnemyTypes)
-        {
-            enemyPools[enemyPrefab] = new Queue<GameObject>();
-            for (int i = 0; i < maxPoolSizePerEnemy; i++)
-            {
-                GameObject enemy = Instantiate(enemyPrefab);
-                enemy.SetActive(false);
-                enemyPools[enemyPrefab].Enqueue(enemy);
-            }
-        }
-    }
-
-    private GameObject GetPooledEnemy(GameObject prefab)
-    {
-        if (enemyPools.ContainsKey(prefab) && enemyPools[prefab].Count > 0)
-        {
-            return enemyPools[prefab].Dequeue();
-        }
-        GameObject enemy = Instantiate(prefab);
-        enemy.SetActive(false);
-        return enemy;
-    }
-
-    private void ReturnEnemyToPool(GameObject enemy)
-    {
-        enemy.SetActive(false);
-        BaseClass enemyScript = enemy.GetComponent<BaseClass>();
-        if (enemyScript != null && enemyScript.CurrentHP <= 0)
-        {
-            GameObject prefab = enemyScript.gameObject;
-            if (prefab && enemyPools.ContainsKey(prefab))
-            {
-                enemyPools[prefab].Enqueue(enemy);
+                Debug.Log("Nieuw enemy type toegevoegd. Totaal: " + activeEnemyTypes.Count);
             }
         }
     }
 
     private IEnumerator SpawnWave()
     {
-        if (spawnPoint == null || activeEnemyTypes.Count == 0 || waypoints == null || waypoints.Length == 0) yield break;
+        if (spawnPoint == null || activeEnemyTypes.Count == 0 || waypoints == null || waypoints.Length == 0)
+        {
+            Debug.LogError("SpawnWave mislukt: spawnPoint, enemyTypes, of waypoints ongeldig.");
+            yield break;
+        }
 
         foreach (GameObject enemyType in activeEnemyTypes)
         {
-            int totalEnemies = baseEnemiesPerType + (currentWaveIndex * enemyIncreasePerWave);
-            for (int i = 0; i < totalEnemies; i++)
+            for (int i = 0; i < enemiesPerTypePerWave; i++) // Vaste aantal per type
             {
-                GameObject enemy = GetPooledEnemy(enemyType);
-                enemy.transform.position = spawnPoint.position;
-                enemy.SetActive(true);
-                BaseEnemy enemyScript = enemy.GetComponent<BaseEnemy>();
+                GameObject newEnemy = Instantiate(enemyType);
+                if (newEnemy == null)
+                {
+                    Debug.LogError("Instantiatie van prefab mislukt voor: " + enemyType.name);
+                    continue;
+                }
+                newEnemy.transform.position = spawnPoint.position;
+                newEnemy.SetActive(true);
+                BaseEnemy enemyScript = newEnemy.GetComponent<BaseEnemy>();
                 if (enemyScript != null)
                 {
                     enemyScript.SetWaypoints(waypoints); // Geef Transform[] waypoints door
+                    Debug.Log("Vijand gespawnd: " + enemyType.name + " (index " + i + ")");
                 }
-                activeEnemies.Add(enemy);
-                yield return new WaitForSeconds(spawnDelay);
+                else
+                {
+                    Debug.LogWarning("Geen BaseEnemy-component op vijand: " + enemyType.name);
+                }
+                activeEnemies.Add(newEnemy);
+                yield return new WaitForSeconds(spawnDelay); // Wacht tussen elke vijand
             }
         }
+
+        // Stel nextWaveTime in na het spawnen van alle vijanden
+        nextWaveTime = Time.time + waveInterval;
+        Debug.Log("Golf " + currentWaveIndex + " spawning voltooid. Volgende golf over: " + waveInterval + " seconden.");
     }
 
     public void RemoveEnemy(GameObject enemy)
     {
         activeEnemies.Remove(enemy);
-        ReturnEnemyToPool(enemy);
         if (activeEnemies.Count == 0)
             Debug.Log("[WaveManager] Golf " + currentWaveIndex + " voltooid!");
     }

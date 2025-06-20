@@ -1,10 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BuildManager : MonoBehaviour
 {
     public static BuildManager Instance { get; private set; } // Singleton
 
-    [SerializeField] private GameObject[] towerPrefabs; // Array van torenprefabs, in Inspector instellen
     [SerializeField] private LayerMask groundLayer; // Laag voor raycast naar de grond
     [SerializeField] private float placementRadius = 1f; // Radius voor collider-check
 
@@ -23,48 +22,47 @@ public class BuildManager : MonoBehaviour
         Instance = this;
     }
 
-    // Selecteer een toren via index (voor UI-knoppen)
-    public void SelectTower(int index)
+    // Selecteer een toren (aangeroepen door TowerSelectionUI)
+    public void SelectTower(GameObject towerPrefab, int cost)
     {
-        if (index < 0 || index >= towerPrefabs.Length)
+        Debug.Log($"SelectTower aangeroepen met prefab {towerPrefab.name} en kosten {cost}");
+        if (towerPrefab == null)
         {
-            Debug.LogWarning("Ongeldige torenindex!");
+            Debug.LogWarning("Geen torenprefab geselecteerd!");
             return;
         }
-
-        selectedTowerPrefab = towerPrefabs[index];
-        if (selectedTowerPrefab == null)
+        if (cost <= 0)
         {
-            Debug.LogWarning("Geen prefab ingesteld voor deze toren!");
-            return;
+            Debug.LogWarning($"Ongeldige kosten ({cost}), default naar 100.");
+            cost = 100;
         }
-
-        TowerCost costComponent = selectedTowerPrefab.GetComponent<TowerCost>();
-        if (costComponent == null)
-        {
-            Debug.LogWarning("Torenprefab heeft geen TowerCost-component!");
-            return;
-        }
-        currentCost = costComponent.cost;
 
         // Controleer materialen
-        if (!MaterialManager.Instance.SpendMaterials(currentCost))
+        if (!MaterialManager.Instance.SpendMaterials(cost))
         {
             Debug.LogWarning("Niet genoeg materialen om deze toren te bouwen!");
             return;
         }
 
+        selectedTowerPrefab = towerPrefab;
+        currentCost = cost;
         StartPlacement();
     }
 
     private void StartPlacement()
     {
+        Debug.Log("StartPlacement aangeroepen");
         if (previewTower != null)
         {
             Destroy(previewTower);
         }
 
         previewTower = Instantiate(selectedTowerPrefab);
+        if (previewTower == null)
+        {
+            Debug.LogError("Preview-toren kon niet worden geïnstantieerd!");
+            return;
+        }
         previewTower.SetActive(false); // Uit tot cursorpositie bekend is
         isPlacing = true;
     }
@@ -111,10 +109,15 @@ public class BuildManager : MonoBehaviour
         {
             renderer.material.color = isValid ? Color.green : Color.red; // Groen = geldig, rood = ongeldig
         }
+        else
+        {
+            Debug.LogWarning("Geen Renderer gevonden in preview-toren!");
+        }
     }
 
     private void PlaceTower()
     {
+        Debug.Log("Toren geplaatst");
         previewTower.SetActive(true);
         Renderer renderer = previewTower.GetComponentInChildren<Renderer>();
         if (renderer != null)
@@ -124,16 +127,15 @@ public class BuildManager : MonoBehaviour
         selectedTowerPrefab = null;
         previewTower = null;
         isPlacing = false;
-        Debug.Log("Toren geplaatst!");
     }
 
     private void CancelPlacement()
     {
+        Debug.Log("Plaatsing geannuleerd");
         Destroy(previewTower);
         MaterialManager.Instance.AddMaterials(currentCost); // Refund
         selectedTowerPrefab = null;
         previewTower = null;
         isPlacing = false;
-        Debug.Log("Plaatsing geannuleerd, materialen teruggegeven.");
     }
 }

@@ -964,9 +964,9 @@ RectTransform:
   - {fileID: 717211072}
   m_Father: {fileID: 1601321472}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 447.2896, y: -52.37726}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &388444911
@@ -1010,9 +1010,9 @@ RectTransform:
   - {fileID: 1345077630}
   m_Father: {fileID: 1601321472}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 347.2896, y: -52.37726}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &398454053
@@ -1802,18 +1802,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821035c9f57783e42a5243f93cb29743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveInterval: 1
+  waveInterval: 3
   spawnPoint: {fileID: 589757641}
-  allEnemyTypes:
-  - {fileID: 1894311398190654180, guid: eafc3c197531f9c488021eb3057084b9, type: 3}
-  - {fileID: 1894311398190654180, guid: eafc3c197531f9c488021eb3057084b9, type: 3}
-  - {fileID: 1894311398190654180, guid: eafc3c197531f9c488021eb3057084b9, type: 3}
+  enemyTypes:
+  - enemyPrefab: {fileID: 6719950871176934233, guid: 753fcae67bac04545afc35ef2e1fb551, type: 3}
+    baseAmount: 0
+    startWave: 0
+    increasePerWave: 0
+  - enemyPrefab: {fileID: 6719950871176934233, guid: 753fcae67bac04545afc35ef2e1fb551, type: 3}
+    baseAmount: 2
+    startWave: 1
+    increasePerWave: 2
+  - enemyPrefab: {fileID: 4764853123829216112, guid: 8d3fd5ad78f8a704090dd5322dd96317, type: 3}
+    baseAmount: 1
+    startWave: 2
+    increasePerWave: 1
   waypoints:
   - {fileID: 1486362109}
   - {fileID: 2118287363}
   - {fileID: 1814574280}
   - {fileID: 1179656318}
-  enemiesPerTypePerWave: 3
   spawnDelay: 1
 --- !u!4 &583790079
 Transform:
@@ -2791,7 +2799,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &927728072
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3454,9 +3462,9 @@ RectTransform:
   - {fileID: 1881599321}
   m_Father: {fileID: 1601321472}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 547.2896, y: -52.37726}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1308699323
@@ -4071,6 +4079,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1601321472}
   - component: {fileID: 1601321473}
+  - component: {fileID: 1601321474}
   m_Layer: 5
   m_Name: TowerHolder
   m_TagString: Untagged
@@ -4127,6 +4136,31 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1601321474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1601321471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3327d3c9e0796914e8456da6d6ae19d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  towerButtons:
+  - button: {fileID: 1140408410}
+    towerPrefab: {fileID: 7611974686039019271, guid: f405a172bd10d16438e1ca2179a1ff17, type: 3}
+    cost: 50
+  - button: {fileID: 1345077633}
+    towerPrefab: {fileID: 7611974686039019271, guid: f405a172bd10d16438e1ca2179a1ff17, type: 3}
+    cost: 30
+  - button: {fileID: 717211075}
+    towerPrefab: {fileID: 3304117968986190551, guid: 26ef96cf83394f4448aa20897677c81c, type: 3}
+    cost: 10
+  - button: {fileID: 1308699323}
+    towerPrefab: {fileID: 8795693338290975750, guid: 1e31494410262e042829d38498e61812, type: 3}
+    cost: 10
 --- !u!1001 &1629664462
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5215,6 +5249,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa0918f2c010dc540a0ef09d810b1336, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  placementRadius: 1
 --- !u!4 &1837428594
 Transform:
   m_ObjectHideFlags: 0
@@ -5368,9 +5406,9 @@ RectTransform:
   - {fileID: 1140408407}
   m_Father: {fileID: 1601321472}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 247.28961, y: -52.37726}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1843903129

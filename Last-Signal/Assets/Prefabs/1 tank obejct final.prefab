@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 6649556713536054072}
   - component: {fileID: 6364689226954454391}
   - component: {fileID: 4431697144299327801}
+  - component: {fileID: 9138087007432428064}
   m_Layer: 0
   m_Name: Cylinder.001
   m_TagString: Untagged
@@ -199,6 +200,30 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &9138087007432428064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3096873505173536956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f47c261a243bf27428a4611a7beede85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  barrelSpawnPoints:
+  - {fileID: 2189005414670469308}
+  - {fileID: 1795437425457984754}
+  projectilePrefab: {fileID: 4885427422906349125, guid: 61cf605b6d330574f9435907a825d7f6, type: 3}
+  towerLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  shootRange: 300
+  fireRate: 2
+  damage: 20
+  projectileSpeed: 300
+  turretRotationSpeed: 40
 --- !u!1 &4764853123829216112
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,6 +233,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6629436823851037320}
+  - component: {fileID: 2755609924297755518}
+  - component: {fileID: 2318595172178355727}
   m_Layer: 0
   m_Name: 1 tank obejct final
   m_TagString: Untagged
@@ -233,6 +260,44 @@ Transform:
   - {fileID: 6649556713536054072}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2755609924297755518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4764853123829216112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8811e43aadc448e4b846e3968608b2c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 100
+  waypoints: []
+  moveSpeed: 5
+  rewardMaterials: 10
+  turnSpeed: 5
+--- !u!65 &2318595172178355727
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4764853123829216112}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4856276116184191347
 GameObject:
   m_ObjectHideFlags: 0

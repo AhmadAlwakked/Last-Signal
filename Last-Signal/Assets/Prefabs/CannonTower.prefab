@@ -131,7 +131,6 @@ GameObject:
   - component: {fileID: 3153611174777182230}
   - component: {fileID: 604378135310680637}
   - component: {fileID: 8486704075998181794}
-  - component: {fileID: 1958347900865824632}
   m_Layer: 0
   m_Name: Cannon
   m_TagString: Untagged
@@ -153,6 +152,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8113855636273522779}
+  - {fileID: 4344472880828900698}
   m_Father: {fileID: 8847022615908322130}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &604378135310680637
@@ -205,30 +205,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1958347900865824632
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4022553681361716196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a831227b2b4aa7e468dce533c5786d89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHP: 100
-  damage: 30
-  fireRate: 2
-  range: 400
-  rotationSpeed: 40
-  projectilePrefab: {fileID: 4885427422906349125, guid: 61cf605b6d330574f9435907a825d7f6, type: 3}
-  barrelSpawnPoints:
-  - {fileID: 8113855636273522779}
-  - {fileID: 4344472880828900698}
-  projectileSpawnPoint: {fileID: 0}
-  projectileSpeed: 300
-  towerData: {fileID: 0}
 --- !u!1 &4687603127861255930
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,11 +332,11 @@ Transform:
   m_GameObject: {fileID: 7093719092921741274}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.24512409, y: 1.38267, z: 1.7035658}
+  m_LocalPosition: {x: 0.207, y: -0.018, z: 1.635}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8847022615908322130}
+  m_Father: {fileID: 3153611174777182230}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7572463721437146405
 GameObject:
@@ -405,6 +381,7 @@ GameObject:
   - component: {fileID: 7320316795467407829}
   - component: {fileID: 8116332200694959871}
   - component: {fileID: 3032558305074771544}
+  - component: {fileID: 3357747881069806717}
   m_Layer: 0
   m_Name: CannonTower
   m_TagString: Untagged
@@ -427,7 +404,6 @@ Transform:
   m_Children:
   - {fileID: 5734033096235350963}
   - {fileID: 3153611174777182230}
-  - {fileID: 4344472880828900698}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!33 &7320316795467407829
@@ -501,3 +477,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.7829854, y: 1.6571451, z: 2.9159532}
   m_Center: {x: 0.11719685, y: 0.8985732, z: 0.09650279}
+--- !u!114 &3357747881069806717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7611974686039019271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8931dbf6d8c79794caad7f3771502aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sellUIPanel: {fileID: 0}
+  sellButton: {fileID: 0}

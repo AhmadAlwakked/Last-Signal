@@ -279,7 +279,6 @@ GameObject:
   - component: {fileID: 6132952371012883505}
   - component: {fileID: 849543108085307359}
   - component: {fileID: 8481436560723284003}
-  - component: {fileID: 4781109840872118224}
   m_Layer: 0
   m_Name: Cube.001
   m_TagString: Untagged
@@ -353,30 +352,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4781109840872118224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3429510267763406098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f47c261a243bf27428a4611a7beede85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  barrelSpawnPoints:
-  - {fileID: 7199454724650134123}
-  - {fileID: 7199454724650134123}
-  projectilePrefab: {fileID: 4885427422906349125, guid: 61cf605b6d330574f9435907a825d7f6, type: 3}
-  towerLayer:
-    serializedVersion: 2
-    m_Bits: 512
-  shootRange: 400
-  fireRate: 2
-  damage: 20
-  projectileSpeed: 400
-  turretRotationSpeed: 100
 --- !u!1 &3738608539369042643
 GameObject:
   m_ObjectHideFlags: 0

@@ -53,4 +53,13 @@ public class MaterialManager : MonoBehaviour
             return false;
         }
     }
+
+    // Voor testen: voeg materialen toe via een toets
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.M)) // Druk op 'M' om te testen
+        {
+            AddMaterials(10);
+        }
+    }
 }

@@ -12,7 +12,9 @@ public class BaseTower : BaseClass
     protected float rotationSpeed = 20f;
     [SerializeField, Tooltip("Projectiel prefab (optioneel voor standaard aanval)")]
     protected GameObject projectilePrefab;
-    [SerializeField, Tooltip("Spawnpunt van het projectiel")]
+    [SerializeField, Tooltip("Spawnpunt(en) van het projectiel, meerdere mogelijk")]
+    protected Transform[] barrelSpawnPoints; // Nieuwe ondersteuning voor meerdere schietpunten
+    [SerializeField, Tooltip("Enkele spawnpunt van het projectiel (fallback)")]
     protected Transform projectileSpawnPoint;
     [SerializeField, Tooltip("Snelheid van het projectiel")]
     protected float projectileSpeed = 10f;
@@ -23,11 +25,30 @@ public class BaseTower : BaseClass
 
     protected float nextFireTime;
     protected Transform currentTarget;
+    private int currentBarrelIndex = 0; // Index voor meerdere schietpunten
 
     protected override void Start()
     {
         base.Start();
         nextFireTime = Time.time;
+        if (barrelSpawnPoints == null || barrelSpawnPoints.Length == 0)
+        {
+            if (projectileSpawnPoint == null || projectilePrefab == null)
+            {
+                Debug.LogError("BaseTower mist essentiële componenten (projectileSpawnPoint of projectilePrefab)!");
+            }
+        }
+        else
+        {
+            foreach (var point in barrelSpawnPoints)
+            {
+                if (point == null)
+                {
+                    Debug.LogError("Een van de barrelSpawnPoints is niet ingesteld!");
+                    return;
+                }
+            }
+        }
     }
 
     protected override void UpdateLogic()
@@ -88,14 +109,15 @@ public class BaseTower : BaseClass
 
     protected virtual void Fire()
     {
-        if (projectilePrefab == null || projectileSpawnPoint == null) return;
+        Transform spawnPoint = (barrelSpawnPoints != null && barrelSpawnPoints.Length > 0) ? barrelSpawnPoints[currentBarrelIndex] : projectileSpawnPoint;
+        if (projectilePrefab == null || spawnPoint == null) return;
 
         Vector3 targetPosition = currentTarget.position;
         BaseEnemy enemy = currentTarget.GetComponent<BaseEnemy>();
         if (enemy != null)
         {
             Vector3 enemyVelocity = enemy.Velocity;
-            float distance = Vector3.Distance(projectileSpawnPoint.position, currentTarget.position);
+            float distance = Vector3.Distance(spawnPoint.position, currentTarget.position);
             float timeToHit = distance / (projectileSpeed - enemyVelocity.magnitude); // Relatieve snelheid
             if (timeToHit > 0)
             {
@@ -103,8 +125,8 @@ public class BaseTower : BaseClass
             }
         }
 
-        Vector3 direction = (targetPosition - projectileSpawnPoint.position).normalized;
-        GameObject projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.LookRotation(direction));
+        Vector3 direction = (targetPosition - spawnPoint.position).normalized;
+        GameObject projectile = Instantiate(projectilePrefab, spawnPoint.position, Quaternion.LookRotation(direction));
 
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
         if (rb == null)
@@ -123,6 +145,12 @@ public class BaseTower : BaseClass
 
         Destroy(projectile, 5f);
         Debug.Log($"Schoot op {currentTarget.name} met voorspelde positie {targetPosition}");
+
+        // Update barrel index als er meerdere schietpunten zijn
+        if (barrelSpawnPoints != null && barrelSpawnPoints.Length > 0)
+        {
+            currentBarrelIndex = (currentBarrelIndex + 1) % barrelSpawnPoints.Length;
+        }
     }
 
     private void OnDrawGizmosSelected()
@@ -131,7 +159,7 @@ public class BaseTower : BaseClass
         Gizmos.DrawWireSphere(transform.position, range);
     }
 
-    private class ProjectileDamage : MonoBehaviour
+    protected class ProjectileDamage : MonoBehaviour
     {
         public float damage;
 

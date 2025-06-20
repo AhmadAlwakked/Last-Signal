@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4737074372366474360}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Laser Shoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 8260650011455572157}
   - component: {fileID: 6396053568823637251}
   - component: {fileID: 2998751159323616996}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: SellButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 8750400272474153444}
   - component: {fileID: 3525141780054314587}
   - component: {fileID: 1997475931714532820}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Canvas (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -287,11 +287,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e91366ec14f634b4fa8c48ad3883d2fa, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2195.5664
+      value: 1610.5664
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e91366ec14f634b4fa8c48ad3883d2fa, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.6829416
+      value: -329.68295
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e91366ec14f634b4fa8c48ad3883d2fa, type: 3}
       propertyPath: m_LocalPosition.z
@@ -303,15 +303,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e91366ec14f634b4fa8c48ad3883d2fa, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e91366ec14f634b4fa8c48ad3883d2fa, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e91366ec14f634b4fa8c48ad3883d2fa, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e91366ec14f634b4fa8c48ad3883d2fa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -333,6 +333,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LASERtower
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e91366ec14f634b4fa8c48ad3883d2fa, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -346,6 +350,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e91366ec14f634b4fa8c48ad3883d2fa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 112633111344114421}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e91366ec14f634b4fa8c48ad3883d2fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3146443832566682905}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e91366ec14f634b4fa8c48ad3883d2fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5386489293159449246}
   m_SourcePrefab: {fileID: 100100000, guid: e91366ec14f634b4fa8c48ad3883d2fa, type: 3}
 --- !u!4 &8168198017039085244 stripped
 Transform:
@@ -377,8 +387,42 @@ MonoBehaviour:
   projectilePrefab: {fileID: 0}
   projectileSpawnPoint: {fileID: 0}
   projectileSpeed: 10
-  towerData: {fileID: 0}
+  nextFireTime: 0
   damagePerSecond: 10
   laserOrigin: {fileID: 4737074372366474360}
   laserMaterial: {fileID: 2100000, guid: 25542d52db198984c82de8a83f7912f5, type: 2}
   laserWidth: 0.2
+--- !u!65 &3146443832566682905
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8795693338290975750}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.3943596, y: 11.912683, z: 6.3943605}
+  m_Center: {x: 0.0074238777, y: 6.0929294, z: 0}
+--- !u!114 &5386489293159449246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8795693338290975750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca9ba79f5fd8f1e40b9cebf892dc7706, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sellCanvas: {fileID: 7740969915021030402}

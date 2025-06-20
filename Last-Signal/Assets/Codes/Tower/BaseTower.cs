@@ -17,9 +17,7 @@ public class BaseTower : BaseClass
     [SerializeField, Tooltip("Snelheid van het projectiel")]
     protected float projectileSpeed = 10f;
     [SerializeField, Tooltip("Data voor deze toren, inclusief bouwkosten")]
-    protected TowerData towerData;
 
-    public TowerData TowerData => towerData; // Voor BuildManager
 
     protected float nextFireTime;
     protected Transform currentTarget;

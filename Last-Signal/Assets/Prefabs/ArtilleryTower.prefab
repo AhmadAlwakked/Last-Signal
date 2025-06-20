@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1709789992939765127}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: schiet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5818999833149188246}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ShootingPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,8 @@ GameObject:
   - component: {fileID: 2608788611945098617}
   - component: {fileID: 7878031320071305229}
   - component: {fileID: 8894853634236053190}
-  m_Layer: 0
+  - component: {fileID: 3130158782085061008}
+  m_Layer: 2
   m_Name: ArtilleryTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,7 +155,21 @@ MonoBehaviour:
   projectilePrefab: {fileID: 4885427422906349125, guid: 61cf605b6d330574f9435907a825d7f6, type: 3}
   projectileSpawnPoint: {fileID: 1709789992939765127}
   projectileSpeed: 1000
-  towerData: {fileID: 0}
+  nextFireTime: 0
+--- !u!114 &3130158782085061008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3304117968986190551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ca0ba8d30897074b86868193a749ef5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 0}
+  towerCost: 0
 --- !u!1 &4966248733390442010
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,7 +182,7 @@ GameObject:
   - component: {fileID: 8052912727077579465}
   - component: {fileID: 8147889407314856652}
   - component: {fileID: 4756889335276506894}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -268,7 +283,7 @@ GameObject:
   - component: {fileID: 4910600124760711473}
   - component: {fileID: 5784500349001655655}
   - component: {fileID: 1312171657530240565}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -353,7 +368,7 @@ GameObject:
   - component: {fileID: 4691984569050712681}
   - component: {fileID: 942829861600915240}
   - component: {fileID: 2545875913406537766}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: SellButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -484,7 +499,7 @@ GameObject:
   - component: {fileID: 6119288085525906937}
   - component: {fileID: 4023981845906282800}
   - component: {fileID: 1127517223171461232}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Altiraly.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}

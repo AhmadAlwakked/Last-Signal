@@ -37,7 +37,7 @@ public class BaseClass : MonoBehaviour
     // Virtuele functie voor frame-elijke logica (bijv. bewegen, aanvallen)
     protected virtual void UpdateLogic()
     {
-        // Leeg, voor kindklassen zoals toren schieten, vijand bewegen
+      //maak een aardapel  // Leeg, voor kindklassen zoals toren schieten, vijand bewegen
     } // Einde UpdateLogic
 
     // Virtuele functie voor reactie op schade (bijv. visuele effecten)
